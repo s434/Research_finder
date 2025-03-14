@@ -60,6 +60,8 @@ This will search for papers related to cancer published in 2024 and save the res
 
 2. Adjust the query format in fetch.py for different search criteria.
 
+## Technologies and Resources Used
+
 - **[Gemini](https://deepmind.google/technologies/gemini/)** – Assisted in problem-solving and generating insights for implementation.
 - **[Poetry Documentation](https://python-poetry.org/docs/)** – Used for dependency management and project structuring.
 - **[NCBI Documentation](https://www.ncbi.nlm.nih.gov/home/develop/api/)** – Referenced for understanding PubMed API and XML structure.
