@@ -1,63 +1,61 @@
 # Research_finder
-Overview
+## Overview
 
 This project extracts and processes research paper metadata from PubMed using XML parsing. It retrieves relevant details such as PubMed ID, title, publication date, non-academic authors, company affiliations, and corresponding author emails. The extracted data is saved as a CSV file.
 
 ## Features
 
-Extracts paper details from PubMed XML responses.
+1. Extracts paper details from PubMed XML responses.
 
-Identifies non-academic authors based on predefined keywords.
+2. Identifies non-academic authors based on predefined keywords.
 
-Extracts email addresses using regex.
+3. Extracts email addresses using regex.
 
-Saves the extracted data into a CSV file.
-
-Handles errors such as file permission issues or duplicate filenames.
+4. Saves the extracted data into a CSV file.
 
 ## Installation
 
-Ensure you have Python 3.7+ installed. First, install Poetry:
+1. Ensure you have Python 3.7+ installed. First, install Poetry: 
 
-pip install poetry
+`pip install poetry`
 
-Create a Poetry Project
+2. Create a Poetry Project
 
-Run the following command to create a new Poetry project:
+3. Run the following command to create a new Poetry project:
 
-poetry new pubmed_extractor
-cd pubmed_extractor
+4. poetry new research_finder
+cd research_finder
 
 Then, update the file structure as follows:
-
+5. 
 ├── src/research_finder/
 │   ├── fetch.py          # Fetches data from PubMed
 │   ├── parse.py          # XML parsing logic
 │   ├── cli.py            # Command-line interface
 │   ├── results/          # Folder to store output files
 
-Add Dependencies
+6. Add Dependencies
 
 Inside the project directory, add required libraries:
 
-poetry add requests pandas xmltodict argparse
+`poetry add requests pandas xmltodict argparse`
 
-Usage
+## Usage
 
-Run the following command to fetch papers based on a PubMed query:
+1. Run the following command to fetch papers based on a PubMed query:
 
-poetry run get-papers-list "biotech" -f output.csv
+`poetry run get-papers-list "biotech" -f output.csv`
 
 This will search for papers related to cancer published in 2024 and save the results to output.csv.
 
-Error Handling
+## Error Handling
 
-If the specified output file already exists, an error message is displayed to prevent overwriting.
+1. If the specified output file already exists, an error message is displayed to prevent overwriting.
 
-If no records are found for the given query, the program alerts the user.
+2. If no records are found for the given query, the program alerts the user.
 
-Customization
+## Customization
 
-Modify NON_ACADEMIC_KEYWORDS in parse.py to refine non-academic author detection.
+1. Modify NON_ACADEMIC_KEYWORDS in parse.py to refine non-academic author detection.
 
-Adjust the query format in fetch.py for different search criteria.
+2. Adjust the query format in fetch.py for different search criteria.
