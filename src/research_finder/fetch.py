@@ -2,7 +2,7 @@ import requests
 from typing import List
 
 def fetch_papers(query: str) -> List[str]:
-    """Fetches PubMed paper IDs based on a query, with error handling."""
+    """Fetches PubMed paper IDs based on a query"""
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
     params = {"db": "pubmed", "term": query, "retmode": "json"}
 
@@ -16,7 +16,7 @@ def fetch_papers(query: str) -> List[str]:
         return []  # Return an empty list instead of crashing
 
 def fetch_paper_details(pubmed_id: str) -> str:
-    """Fetches full paper details (XML format) from PubMed, with error handling."""
+    """Fetches full paper details (XML format) from PubMed."""
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
     params = {"db": "pubmed", "id": pubmed_id, "retmode": "xml"}
 

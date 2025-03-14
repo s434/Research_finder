@@ -46,7 +46,7 @@ def main():
         print(" No valid papers with relevant affiliations found.")
         return
 
-    # Save to CSV or Print to Console
+   
     output_filename = args.file if args.file else "results.csv"
     save_to_csv(papers_data, output_filename)
     

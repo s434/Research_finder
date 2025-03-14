@@ -2,7 +2,6 @@ import xml.etree.ElementTree as ET
 import re
 from typing import List, Dict, Tuple
 
-# Expanded keyword list to detect non-academic institutions more effectively
 NON_ACADEMIC_KEYWORDS = [
     "Inc.", "Ltd.", "Biotech", "Pharmaceuticals", "Corp.", "Genomics", 
     "Diagnostics", "Laboratories", "Research Institute", "Therapeutics", 
@@ -12,7 +11,7 @@ NON_ACADEMIC_KEYWORDS = [
 def parse_papers(xml_data: str) -> List[Dict]:
     """Parses PubMed XML response and extracts relevant details."""
     if not xml_data:
-        return []  # Avoid parsing empty data
+        return []  
     
     try:
         root = ET.fromstring(xml_data)
@@ -41,7 +40,7 @@ def parse_papers(xml_data: str) -> List[Dict]:
     
     except ET.ParseError as e:
         print(f"Error parsing XML: {e}")
-        return []  # Return empty list instead of crashing
+        return []  
 
 def get_text(element, path: str) -> str:
     """Helper function to safely extract text from an XML element."""
