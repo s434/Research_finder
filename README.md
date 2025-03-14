@@ -38,10 +38,12 @@ Then, update the file structure as follows:
 
 Inside the project directory, add required libraries:
 
-`poetry add requests pandas xmltodict argparse`  
+`poetry add requests pandas xmltodict argparse`    
+
 To define the executable, modify pyproject.toml by adding:   
 `[tool.poetry.scripts]
-get-papers-list = "research_finder.cli:main"`  
+get-papers-list = "research_finder.cli:main"`    
+
 Then, reinstall the package to apply the changes:  
 `poetry install`  
 
