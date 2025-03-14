@@ -1,5 +1,6 @@
 import argparse
 import csv
+import datetime
 import os
 from research_finder.fetch import fetch_papers, fetch_paper_details
 from research_finder.parse import parse_papers
@@ -19,11 +20,16 @@ def main():
 
   4. Save results to a file:
      get-papers-list "machine learning AND genomics" -f results.csv\n
+
+  5. Enable debug mode:
+     get-papers-list "COVID-19 AND vaccine" --debug\n
 """
     )
 
     parser.add_argument("query", type=str, help="Search query for PubMed (use PubMed query syntax)")
     parser.add_argument("-f", "--file", type=str, help="Output CSV filename")
+    parser.add_argument("-d", "--debug", action="store_true", help="Enable debug mode for detailed output")
+
     args = parser.parse_args()
 
     print(f" Searching PubMed for: {args.query}")
@@ -34,38 +40,55 @@ def main():
         print(" No papers found for this query.")
         return
 
+    if args.debug:
+        print(f" Debug: Retrieved {len(paper_ids)} paper IDs: {paper_ids}")
+
     # Convert paper IDs to XML details
     papers_data = []
     for pubmed_id in paper_ids:
         xml_data = fetch_paper_details(pubmed_id)
+        if args.debug:
+            print(f" Debug: Fetched XML for PubMed ID {pubmed_id}: {xml_data[:500]}...")  # Print first 500 chars
+
         if xml_data:
             parsed_paper = parse_papers(xml_data)
+            if args.debug:
+                print(f" Debug: Parsed Data for {pubmed_id}: {parsed_paper}")
+
             papers_data.extend(parsed_paper)
 
     if not papers_data:
         print(" No valid papers with relevant affiliations found.")
         return
 
-   
+    # Determine output filename
     output_filename = args.file if args.file else "results.csv"
-    save_to_csv(papers_data, output_filename)
-    
-def save_to_csv(data, filename):
-    """Save results to a CSV file inside the 'results' folder."""
+    save_to_csv(papers_data, output_filename, args.debug)
+
+def save_to_csv(data, filename, debug=False):
+    """Save results to a CSV file inside the 'results' folder with a unique name if needed."""
     results_dir = os.path.join(os.path.dirname(__file__), "results")
-    os.makedirs(results_dir, exist_ok=True)  # Create 'results' folder if it does not exist
+    os.makedirs(results_dir, exist_ok=True)
 
     output_path = os.path.join(results_dir, filename)
 
+    if os.path.exists(output_path):
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"results_{timestamp}.csv"
+        output_path = os.path.join(results_dir, filename)
+        print(f"File already exists. Saving as {filename}")
+
+    if debug:
+        print(f" Debug: Saving file to {output_path}")
+
     try:
-        if os.path.exists(output_path):
-            raise FileExistsError(f"Error: The file '{output_path}' already exists. Choose a different filename.")
         with open(output_path, mode="w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=["PubmedID", "Title", "Publication Date", "Non-academic Author(s)", "Company Affiliation(s)", "Corresponding Author Email"])
             writer.writeheader()
             writer.writerows(data)
+
         print(f" Successfully saved {len(data)} records to {filename}")
-    
+
     except IOError as e:
         print(f" Error saving to file: {e}")
 
